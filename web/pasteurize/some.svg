@@ -1,0 +1,7 @@
+<svg onload="fetch('http://'ec2-54-82-200-213.compute-1.amazonaws.com:8000/load.svg');"
+onerror="fetch('http://'ec2-54-82-200-213.compute-1.amazonaws.com:8000/error.svg');"
+>
+<circle cx="50" cy="50" r="50"/>
+<script>alert();</script>
+</svg>
+

