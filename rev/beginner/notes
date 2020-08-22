@@ -17,3 +17,9 @@ XOR leaves:
 0x6228673a4864304f5613519e08a27e24
 
 then strncmp
+
+build intercept.c:
+gcc -shared -fPIC -o intercept.so intercept.c
+
+then inject with LD_PRELOAD:
+LD_PRELOAD="$(pwd)/intercept.so" ./a.out
