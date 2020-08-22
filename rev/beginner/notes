@@ -16,6 +16,20 @@ ADD32 leaves:
 XOR leaves:
 0x6228673a4864304f5613519e08a27e24
 
+SO: (these are all reversed to the 'normal' way you might expect a string)
+shuffle:
+
+[ 0,15,14,13,12,11,10, 9, 8, 7, 6, 5, 4, 3, 2, 1]
+[ 1,14,13,11, 9, 5, 0, 4,15,10,12, 6, 2, 8, 7, 3]
+
+sum:
+[67,63,74,66,13,37,13,37,fe,e1,de,ad,de,ad,be,ef]
+
+xor:
+[aa,f9,86,eb,34,f8,23,d4,38,5f,1a,8d,49,b4,58,76]
+
+to get
+
 then strncmp
 
 build intercept.c:
