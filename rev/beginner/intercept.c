@@ -11,26 +11,10 @@ int strncmp(char const *s1 , char const *s2, size_t n) {
     strncpy(b2, s2, 16);
     b2[16] = '\0';
     int r = strcmp(b1, b2);
-    printf("\n[0x");
-    fflush(0);
-    for (int i = 0; i < 16; ++i) {
-        printf("%02x", (unsigned int) b1[i]);
-        if ((i % 4) == 3) {
-            printf(" ");
-        }
-        fflush(0);
-    }
-    printf("]\n");
-    printf("[0x");
-    fflush(0);
+    printf("\n0x");
     for (int i = 0; i < 16; ++i) {
         printf("%02x", (unsigned int) b2[i]);
-        if ((i % 4) == 3) {
-            printf(" ");
-        }
-        fflush(0);
     }
-    printf("] ");
-    printf("[%d]\n", r);
+    printf("\n");
     return r;
 }
