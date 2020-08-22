@@ -1,0 +1,6 @@
+set environment LD_PRELOAD ./intercept.so
+b *0x00005555555550be
+b *0x00005555555550c7
+b *0x00005555555550cf
+b *0x00005555555550d7
+b strncmp
