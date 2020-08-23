@@ -1,4 +1,8 @@
 hw/basic/obj_dir/
+sandbox/writeonly/chal
+sandbox/writeonly/chal.o
+sandbox/writeonly/shellcode.o
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
