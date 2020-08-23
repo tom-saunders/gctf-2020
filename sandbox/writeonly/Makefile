@@ -18,8 +18,11 @@ payload.odump: shellcode.o
 shellcode.o: Makefile shellcode.c
 	${CC} -c shellcode.c -o shellcode.o -fPIE -masm=intel -O3
 
+local: payload.out
+	cat payload.out | ./chal > system.response || true
+	xxd system.response
 doit: payload.out
 	cat payload.out | ncat writeonly.2020.ctfcompetition.com 1337 > system.response
 	xxd system.response
 
-.PHONY: all doit
+.PHONY: all doit local
