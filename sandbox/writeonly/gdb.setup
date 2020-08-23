@@ -1,0 +1,12 @@
+layout reg
+b read_shellcode
+r < payload.out
+n
+ni
+ni
+ni
+ni
+b
+dis br 1
+si
+set follow-fork-mode child
