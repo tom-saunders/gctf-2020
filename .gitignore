@@ -2,6 +2,9 @@ hw/basic/obj_dir/
 sandbox/writeonly/chal
 sandbox/writeonly/chal.o
 sandbox/writeonly/shellcode.o
+sandbox/writeonly/payload*.out
+sandbox/writeonly/payload.odump
+sandbox/writeonly/system.response
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
